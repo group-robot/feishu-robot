@@ -14,6 +14,10 @@ const (
 // Message interface
 type Message interface {
 	ToMessageMap() map[string]interface{}
+}
+
+type ContentMessage interface {
+	Message
 	GetMsgType() MsgType
 }
 
