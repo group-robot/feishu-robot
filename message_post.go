@@ -35,7 +35,11 @@ type PostContent struct {
 
 func (postContent *PostContent) ToMessageMap() map[string]interface{} {
 	langMap := map[string]interface{}{}
-	langMap[postContent.lang] = postContent.PostUnit.ToMessageMap()
+	lang := "zh-cn"
+	if postContent.lang != "" {
+		lang = postContent.lang
+	}
+	langMap[lang] = postContent.PostUnit.ToMessageMap()
 	return langMap
 }
 func NewPostContent() *PostContent {
