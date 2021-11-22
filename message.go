@@ -18,5 +18,5 @@ type Message interface {
 }
 
 type BaseMessage struct {
-	MsgType MsgType `json:"msg_type"`
+	MsgType MsgType
 }
