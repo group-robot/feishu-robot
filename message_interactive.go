@@ -2,6 +2,7 @@ package feishu
 
 type InteractiveMessage struct {
 	BaseMessage
+	CardJsonStr string
 	Link        *CardLink
 	Header      *CardHeader
 	Config      *CardConfig
@@ -31,6 +32,10 @@ func (m *InteractiveMessage) SetElements(elements *ElementsContent) *Interactive
 }
 func (m *InteractiveMessage) SetI18nElement(i18nElements []*I18nElementsContent) *InteractiveMessage {
 	m.I18nElement = i18nElements
+	return m
+}
+func (m *InteractiveMessage) SetCardJsonStr(jsonStr string) *InteractiveMessage {
+	m.CardJsonStr = jsonStr
 	return m
 }
 func (m *InteractiveMessage) AddI18nElement(i18nElement *I18nElementsContent) *InteractiveMessage {
@@ -63,7 +68,11 @@ func (m *InteractiveMessage) ToMessageMap() map[string]interface{} {
 	}
 	cardMessage := map[string]interface{}{}
 	cardMessage["msg_type"] = m.GetMsgType()
-	cardMessage["card"] = message
+	if m.CardJsonStr == "" {
+		cardMessage["card"] = message
+	} else {
+		cardMessage["card"] = m.CardJsonStr
+	}
 	return cardMessage
 }
 
