@@ -10,10 +10,10 @@ func TestNewPostUnit(t *testing.T) {
 	message := NewPostUnit().
 		SetTitle("项目更新通知").
 		AddPostTags(
-			NewPostTags().addTag(
+			NewPostTags().AddTags(
 				NewTextTag().SetContent("项目有更新:"),
 				NewATag().SetContent("请查看").SetHref("http://www.example.com/"),
-				NewAtTag().SetAtAll(),
+				NewAtTag().SetAtAll(true),
 			),
 		).ToMessageMap()
 	bt, err := json.Marshal(message)
@@ -28,10 +28,10 @@ func TestNewPostContent(t *testing.T) {
 		NewPostUnit().
 			SetTitle("项目更新通知").
 			AddPostTags(
-				NewPostTags().addTag(
+				NewPostTags().AddTags(
 					NewTextTag().SetContent("项目有更新:"),
 					NewATag().SetContent("请查看").SetHref("http://www.example.com/"),
-					NewAtTag().SetAtAll(),
+					NewAtTag().IsAtAll(),
 				),
 			),
 	).ToMessageMap()
@@ -45,15 +45,15 @@ func TestNewPostContent(t *testing.T) {
 func TestPostMessage_ToMessageMap(t *testing.T) {
 	webhok := os.Getenv("webhok")
 	secret := os.Getenv("secret")
-	message := NewPostMessage().addContent(
+	message := NewPostMessage().AddContent(
 		NewPostContent().SetLang("zh_cn").SetPostUnit(
 			NewPostUnit().
 				SetTitle("项目更新通知").
 				AddPostTags(
-					NewPostTags().addTag(
+					NewPostTags().AddTags(
 						NewTextTag().SetContent("项目有更新:"),
 						NewATag().SetContent("请查看").SetHref("http://www.example.com/"),
-						NewAtTag().SetAtAll(),
+						NewAtTag().IsAtAll(),
 					),
 				),
 		),

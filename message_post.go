@@ -5,9 +5,15 @@ type PostMessage struct {
 	Content map[string]interface{}
 }
 
-func (message *PostMessage) addContent(content *PostContent) *PostMessage {
+func (message *PostMessage) AddContent(content *PostContent) *PostMessage {
 	for k, v := range content.ToMessageMap() {
 		message.Content[k] = v
+	}
+	return message
+}
+func (message *PostMessage) AddContents(contents ...*PostContent) *PostMessage {
+	for _, content := range contents {
+		message.AddContent(content)
 	}
 	return message
 }
@@ -205,7 +211,11 @@ func (tag *AtTag) SetUserName(username string) *AtTag {
 	tag.Username = username
 	return tag
 }
-func (tag *AtTag) SetAtAll() *AtTag {
+func (tag *AtTag) SetAtAll(atAll bool) *AtTag {
+	tag.AtAll = atAll
+	return tag
+}
+func (tag *AtTag) IsAtAll() *AtTag {
 	tag.AtAll = true
 	return tag
 }
@@ -260,7 +270,11 @@ func NewPostTags() *PostTags {
 	return tags
 }
 
-func (tags *PostTags) addTag(tag ...PostTag) *PostTags {
-	tags.postTags = append(tags.postTags, tag...)
-	return tags
+func (tag *PostTags) AddTags(tags ...PostTag) *PostTags {
+	tag.postTags = append(tag.postTags, tags...)
+	return tag
+}
+func (tag *PostTags) AddTag(postTag PostTag) *PostTags {
+	tag.postTags = append(tag.postTags, postTag)
+	return tag
 }

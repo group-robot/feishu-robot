@@ -22,6 +22,10 @@ func (f *Filed) SetShort(short bool) *Filed {
 	f.IsShort = short
 	return f
 }
+func (f *Filed) Short() *Filed {
+	f.IsShort = true
+	return f
+}
 func (f *Filed) SetText(text *Text) *Filed {
 	f.Text = text
 	return f
@@ -86,6 +90,7 @@ func (image *Image) SetPreView(preview bool) *Image {
 	image.PreView = preview
 	return image
 }
+
 func (image *Image) ToMessageMap() map[string]interface{} {
 	message := map[string]interface{}{}
 	message["tag"] = "img"
@@ -129,6 +134,10 @@ func (m *ActionModule) SetActions(actions []Action) *ActionModule {
 }
 func (m *ActionModule) AddAction(action Action) *ActionModule {
 	m.Actions = append(m.Actions, action)
+	return m
+}
+func (m *ActionModule) AddActions(actions ...Action) *ActionModule {
+	m.Actions = append(m.Actions, actions...)
 	return m
 }
 
@@ -246,10 +255,15 @@ func (o *Overflow) SetOptions(options []*Option) *Overflow {
 	o.Options = options
 	return o
 }
-func (o *Overflow) addOption(option *Option) *Overflow {
+func (o *Overflow) AddOption(option *Option) *Overflow {
 	o.Options = append(o.Options, option)
 	return o
 }
+func (o *Overflow) AddOptions(options ...*Option) *Overflow {
+	o.Options = append(o.Options, options...)
+	return o
+}
+
 func (o *Overflow) SetValue(value string) *Overflow {
 	o.Value = value
 	return o
@@ -320,6 +334,11 @@ func (m *SelectMenu) AddOption(option *Option) *SelectMenu {
 	m.Options = append(m.Options, option)
 	return m
 }
+func (m *SelectMenu) AddOptions(options ...*Option) *SelectMenu {
+	m.Options = append(m.Options, options...)
+	return m
+}
+
 func (m *SelectMenu) SetValue(value string) *SelectMenu {
 	m.Value = value
 	return m

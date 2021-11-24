@@ -173,6 +173,11 @@ func (c *NoteCardContent) AddElement(element Message) *NoteCardContent {
 	c.Elements = append(c.Elements, element)
 	return c
 }
+func (c *NoteCardContent) AddElements(elements ...Message) *NoteCardContent {
+	c.Elements = append(c.Elements, elements...)
+	return c
+}
+
 func (c *NoteCardContent) ToMessageMap() map[string]interface{} {
 	message := map[string]interface{}{}
 	message["tag"] = "note"
