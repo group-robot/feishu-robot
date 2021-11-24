@@ -133,7 +133,7 @@ type CardTitle struct {
 	I18n    map[string]string
 }
 
-func newCardTitle() *CardTitle {
+func NewCardTitle() *CardTitle {
 	return &CardTitle{
 		I18n: map[string]string{},
 	}

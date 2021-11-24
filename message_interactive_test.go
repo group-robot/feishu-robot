@@ -11,7 +11,7 @@ func TestInteractiveMessage_ToMessageMap(t *testing.T) {
 	message.
 		SetConfig(NewCardConfig().SetWideScreenMode(true)).
 		SetHeader(
-			NewCardHeader().SetTitle(newCardTitle().SetContent("你有一个休假申请待审批")),
+			NewCardHeader().SetTitle(NewCardTitle().SetContent("你有一个休假申请待审批")),
 		).
 		SetElements(
 			NewElementsContent().
@@ -60,7 +60,7 @@ func TestInteractiveMessage_ToMessageMap2(t *testing.T) {
 	message := NewInteractiveMessage()
 	message.SetConfig(NewCardConfig().SetWideScreenMode(true)).
 		SetHeader(
-			NewCardHeader().SetTemplate("indigo").SetTitle(newCardTitle().SetContent("🐈 英国短毛猫")),
+			NewCardHeader().SetTemplate("indigo").SetTitle(NewCardTitle().SetContent("🐈 英国短毛猫")),
 		).SetElements(
 		NewElementsContent().AddElement(
 			NewDivCardContent().
