@@ -8,7 +8,7 @@ import (
 func TestNewTextMessage(t *testing.T) {
 	webhok := os.Getenv("webhok")
 	secret := os.Getenv("secret")
-	client := newClient(webhok, secret)
+	client := NewClient(webhok, secret)
 	_, err := client.Send(NewTextMessage().SetContent("test").SetAtAll())
 	if err != nil {
 		t.Logf("%s", err)
@@ -18,7 +18,7 @@ func TestNewTextMessage(t *testing.T) {
 func TestTextMessage_NonAtAll(t *testing.T) {
 	webhok := os.Getenv("webhok")
 	secret := os.Getenv("secret")
-	client := newClient(webhok, secret)
+	client := NewClient(webhok, secret)
 	_, err := client.Send(NewTextMessage().SetContent("test"))
 	if err != nil {
 		t.Logf("%s", err)

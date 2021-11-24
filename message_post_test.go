@@ -64,7 +64,7 @@ func TestPostMessage_ToMessageMap(t *testing.T) {
 	}
 	t.Logf("json:%s", string(bt))
 
-	client := newClient(webhok, secret)
+	client := NewClient(webhok, secret)
 	_, err = client.Send(message)
 	if err != nil {
 		t.Logf("%s", err)

@@ -48,7 +48,7 @@ func TestInteractiveMessage_ToMessageMap(t *testing.T) {
 	}
 	t.Logf("json:%s", string(bt))
 
-	client := newClient(webhok, secret)
+	client := NewClient(webhok, secret)
 	_, err = client.Send(message)
 	if err != nil {
 		t.Logf("%s", err)
@@ -102,7 +102,7 @@ func TestInteractiveMessage_ToMessageMap2(t *testing.T) {
 	}
 	t.Logf("json:%s", string(bt))
 
-	client := newClient(webhok, secret)
+	client := NewClient(webhok, secret)
 	_, err = client.Send(message)
 	if err != nil {
 		t.Logf("%s", err)
@@ -232,7 +232,7 @@ func TestInteractiveMessage_SetCardJsonStr(t *testing.T) {
 	webhok := os.Getenv("webhok")
 	secret := os.Getenv("secret")
 
-	client := newClient(webhok, secret)
+	client := NewClient(webhok, secret)
 	_, err := client.Send(message)
 	if err != nil {
 		t.Logf("%s", err)

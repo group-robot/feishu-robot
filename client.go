@@ -15,7 +15,7 @@ type Client struct {
 }
 
 // NewClient new feishu robot client
-func newClient(webhok, secret string) *Client {
+func NewClient(webhok, secret string) *Client {
 	return &Client{webhok, secret}
 }
 
