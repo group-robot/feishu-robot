@@ -9,7 +9,7 @@ func TestNewTextMessage(t *testing.T) {
 	webhok := os.Getenv("webhok")
 	secret := os.Getenv("secret")
 	client := NewClient(webhok, secret)
-	_, err := client.Send(NewTextMessage().SetContent("test").SetAtAll())
+	_, err := client.Send(NewTextMessage().SetContent("test").SetAtAll(true))
 	if err != nil {
 		t.Logf("%s", err)
 	}
