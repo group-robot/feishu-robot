@@ -33,7 +33,11 @@ func (message *TextMessage) SetContent(content string) *TextMessage {
 	message.Content = content
 	return message
 }
-func (message *TextMessage) SetAtAll() *TextMessage {
+func (message *TextMessage) SetAtAll(atAll bool) *TextMessage {
+	message.isAtAll = atAll
+	return message
+}
+func (message *TextMessage) IsAtAll() *TextMessage {
 	message.isAtAll = true
 	return message
 }
