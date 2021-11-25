@@ -18,25 +18,25 @@ func TestInteractiveMessage_ToMessageMap(t *testing.T) {
 				AddElement(
 					NewDivCardContent().
 						AddField(
-							NewFiled().SetShort(true).SetText(NewText().Tag(LarkMd).SetContent("**申请人**\n王晓磊")),
+							NewField().SetShort(true).SetText(NewText().SetTag(LarkMd).SetContent("**申请人**\n王晓磊")),
 						).AddField(
-						NewFiled().SetShort(true).SetText(NewText().Tag(LarkMd).SetContent("**休假类型：**\n年")),
+						NewField().SetShort(true).SetText(NewText().SetTag(LarkMd).SetContent("**休假类型：**\n年")),
 					).AddField(
-						NewFiled().SetShort(false).SetText(NewText().Tag(LarkMd).SetContent("")),
+						NewField().SetShort(false).SetText(NewText().SetTag(LarkMd).SetContent("")),
 					).AddField(
-						NewFiled().SetShort(false).SetText(NewText().Tag(LarkMd).SetContent("**时间：**\n2020-4-8 至 2020-4-10（共3天）")),
+						NewField().SetShort(false).SetText(NewText().SetTag(LarkMd).SetContent("**时间：**\n2020-4-8 至 2020-4-10（共3天）")),
 					).AddField(
-						NewFiled().SetShort(false).SetText(NewText().Tag(LarkMd).SetContent("")),
+						NewField().SetShort(false).SetText(NewText().SetTag(LarkMd).SetContent("")),
 					).AddField(
-						NewFiled().SetShort(true).SetText(NewText().Tag(LarkMd).SetContent("**备注**\n因家中有急事，需往返老家，故请假")),
+						NewField().SetShort(true).SetText(NewText().SetTag(LarkMd).SetContent("**备注**\n因家中有急事，需往返老家，故请假")),
 					),
 				).AddElement(
 				NewHrCardContent(),
 			).AddElement(
 				NewActionModule().SetLayout(BisectedLayout).AddAction(
-					NewButton().SetText(NewText().Tag(PlainText).SetContent("批准")).SetType(PrimaryButton).SetValue("chosen", "approve"),
+					NewButton().SetText(NewText().SetTag(PlainText).SetContent("批准")).SetType(PrimaryButton).SetValue("chosen", "approve"),
 				).AddAction(
-					NewButton().SetText(NewText().Tag(PlainText).SetContent("拒绝")).SetType(PrimaryButton).SetValue("chosen", "decline"),
+					NewButton().SetText(NewText().SetTag(PlainText).SetContent("拒绝")).SetType(PrimaryButton).SetValue("chosen", "decline"),
 				),
 			),
 		)
@@ -65,32 +65,32 @@ func TestInteractiveMessage_ToMessageMap2(t *testing.T) {
 		NewElementsContent().AddElement(
 			NewDivCardContent().
 				SetText(NewText().
-					Tag(LarkMd).
+					SetTag(LarkMd).
 					SetContent("英国短毛猫，体形圆胖，四肢短粗发达，毛短而密，头大脸圆，对人友善。 \n其历史可追溯至古罗马时期的家猫，由于拥有悠久的育种历史，称得上是猫家族中的典范。"),
-				).SetExtra(NewImgCardContent().SetImgKey("img_1cad0e51-26f6-492a-8280-a47057b09a0g").SetAlt(NewText().Tag(PlainText).SetContent("图片"))),
+				).SetExtra(NewImgCardContent().SetImgKey("img_1cad0e51-26f6-492a-8280-a47057b09a0g").SetAlt(NewText().SetTag(PlainText).SetContent("图片"))),
 		).AddElement(
 			NewDivCardContent().AddField(
-				NewFiled().SetShort(true).SetText(NewText().Tag(LarkMd).SetContent("**中文学名：**\n英国短毛猫")),
+				NewField().SetShort(true).SetText(NewText().SetTag(LarkMd).SetContent("**中文学名：**\n英国短毛猫")),
 			).AddField(
-				NewFiled().SetShort(true).SetText(NewText().Tag(LarkMd).SetContent("**拉丁学名：**\nFelinae")),
+				NewField().SetShort(true).SetText(NewText().SetTag(LarkMd).SetContent("**拉丁学名：**\nFelinae")),
 			).AddField(
-				NewFiled().SetShort(false).SetText(NewText().Tag(LarkMd).SetContent("")),
+				NewField().SetShort(false).SetText(NewText().SetTag(LarkMd).SetContent("")),
 			).AddField(
-				NewFiled().SetShort(true).SetText(NewText().Tag(LarkMd).SetContent("**体形：**\n圆胖")),
+				NewField().SetShort(true).SetText(NewText().SetTag(LarkMd).SetContent("**体形：**\n圆胖")),
 			).AddField(
-				NewFiled().SetShort(true).SetText(NewText().Tag(LarkMd).SetContent("**被毛：**\n短而浓密、俗称地毯毛")),
+				NewField().SetShort(true).SetText(NewText().SetTag(LarkMd).SetContent("**被毛：**\n短而浓密、俗称地毯毛")),
 			),
 		).AddElement(NewHrCardContent()).AddElement(
 			NewDivCardContent().
 				SetText(NewText().
-					Tag(LarkMd).
+					SetTag(LarkMd).
 					SetContent("**1 形态特征**\n\n 🔵 外形：身体厚实，胸部饱满宽阔，腿部粗壮，爪子浑圆，尾巴的根部粗壮，尾尖钝圆。\n\n🔵 毛色：共有十五种品种被承认，其中最著名的是蓝色系的英国短毛猫。 ")).
-				SetExtra(NewImgCardContent().SetImgKey("img_70558e3a-2eef-4e8f-9a07-a701c165431g").SetAlt(NewText().Tag(PlainText).SetContent("图片"))),
+				SetExtra(NewImgCardContent().SetImgKey("img_70558e3a-2eef-4e8f-9a07-a701c165431g").SetAlt(NewText().SetTag(PlainText).SetContent("图片"))),
 		).AddElement(
 			NewNoteCardContent().AddElement(
-				NewImgCardContent().SetImgKey("img_7ea74629-9191-4176-998c-2e603c9c5e8g").SetAlt(NewText().Tag(PlainText).SetContent("图片")),
+				NewImgCardContent().SetImgKey("img_7ea74629-9191-4176-998c-2e603c9c5e8g").SetAlt(NewText().SetTag(PlainText).SetContent("图片")),
 			).AddElement(
-				NewText().Tag(PlainText).SetContent("以上资料来自百度百科"),
+				NewText().SetTag(PlainText).SetContent("以上资料来自百度百科"),
 			),
 		),
 	)

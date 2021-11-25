@@ -1,16 +1,21 @@
 package feishu
 
+// PostMessage 富文本消息
 type PostMessage struct {
 	BaseMessage
+	// Content 内容
 	Content map[string]interface{}
 }
 
+// AddContent add PostMessage.Content
 func (message *PostMessage) AddContent(content *PostContent) *PostMessage {
 	for k, v := range content.ToMessageMap() {
 		message.Content[k] = v
 	}
 	return message
 }
+
+// AddContents add PostMessage.Content
 func (message *PostMessage) AddContents(contents ...*PostContent) *PostMessage {
 	for _, content := range contents {
 		message.AddContent(content)
@@ -34,34 +39,46 @@ func NewPostMessage() *PostMessage {
 	}
 }
 
+// PostContent 富文本内容
 type PostContent struct {
-	lang     string
+	// Lang 语言 默认:zh-cn
+	Lang string
+	// PostUnit 富文本具体内容
 	PostUnit *PostUnit
 }
 
 func (postContent *PostContent) ToMessageMap() map[string]interface{} {
 	langMap := map[string]interface{}{}
 	lang := "zh-cn"
-	if postContent.lang != "" {
-		lang = postContent.lang
+	if postContent.Lang != "" {
+		lang = postContent.Lang
 	}
 	langMap[lang] = postContent.PostUnit.ToMessageMap()
 	return langMap
 }
+
+// NewPostContent create PostContent
 func NewPostContent() *PostContent {
 	return new(PostContent)
 }
+
+// SetLang set PostContent.Lang
 func (postContent *PostContent) SetLang(lang string) *PostContent {
-	postContent.lang = lang
+	postContent.Lang = lang
 	return postContent
 }
+
+// SetPostUnit set 富文本每组段落
 func (postContent *PostContent) SetPostUnit(unit *PostUnit) *PostContent {
 	postContent.PostUnit = unit
 	return postContent
 }
 
+// PostUnit 富文本每组内容
 type PostUnit struct {
-	Title   string
+	// Title 标题
+	Title string
+	// Content 段落
 	Content [][]map[string]interface{}
 }
 
@@ -72,18 +89,26 @@ func (p *PostUnit) ToMessageMap() map[string]interface{} {
 	return postUnitMap
 }
 
+// NewPostUnit create PostUnit
 func NewPostUnit() *PostUnit {
-	return &PostUnit{}
+	return &PostUnit{
+		Content: [][]map[string]interface{}{},
+	}
 }
 
+// SetTitle set 标题
 func (p *PostUnit) SetTitle(title string) *PostUnit {
 	p.Title = title
 	return p
 }
+
+// SetContent set 富文本段落
 func (p *PostUnit) SetContent(content [][]map[string]interface{}) *PostUnit {
 	p.Content = content
 	return p
 }
+
+// AddTags add PostTags
 func (p *PostUnit) AddTags(tags []PostTag) *PostUnit {
 	if p.Content == nil {
 		p.Content = make([][]map[string]interface{}, 0)
@@ -95,18 +120,22 @@ func (p *PostUnit) AddTags(tags []PostTag) *PostUnit {
 	p.Content = append(p.Content, tag)
 	return p
 }
+
+// AddPostTag add PostTags
 func (p *PostUnit) AddPostTag(postTags *PostTags) *PostUnit {
 	var tag []map[string]interface{}
-	for _, v := range postTags.postTags {
+	for _, v := range postTags.PostTags {
 		tag = append([]map[string]interface{}{}, v.ToMessageMap())
 	}
 	p.Content = append(p.Content, tag)
 	return p
 }
+
+// AddPostTags add PostTags
 func (p *PostUnit) AddPostTags(tags ...*PostTags) *PostUnit {
 	var tag []map[string]interface{}
 	for _, postTags := range tags {
-		for _, v := range postTags.postTags {
+		for _, v := range postTags.PostTags {
 			tag = append(tag, v.ToMessageMap())
 		}
 	}
@@ -114,12 +143,18 @@ func (p *PostUnit) AddPostTags(tags ...*PostTags) *PostUnit {
 	return p
 }
 
+// PostTag 富文本标签
 type PostTag interface {
 	Message
+	// getTag 标签名
 	getTag() string
 }
+
+// TextTag 文本标签
 type TextTag struct {
-	Content  string
+	// Content 	文本内容
+	Content string
+	// UnEsCape 表示是不是,默认false
 	UnEsCape bool
 }
 
@@ -137,20 +172,28 @@ func (tag *TextTag) ToMessageMap() map[string]interface{} {
 	return contentMap
 }
 
+// NewTextTag create TextTag
 func NewTextTag() *TextTag {
 	return new(TextTag)
 }
+
+//SetContent set TextTag.Content
 func (tag *TextTag) SetContent(content string) *TextTag {
 	tag.Content = content
 	return tag
 }
+
+//SetUnEsCape set TextTag.UnEsCape is true
 func (tag *TextTag) SetUnEsCape() *TextTag {
 	tag.UnEsCape = true
 	return tag
 }
 
+// ATag a标签
 type ATag struct {
-	Href    string
+	// Href 默认的链接地址
+	Href string
+	// Content 文本内容
 	Content string
 }
 
@@ -164,21 +207,31 @@ func (tag *ATag) ToMessageMap() map[string]interface{} {
 	tagMessage["text"] = tag.Content
 	return tagMessage
 }
+
+// NewATag create ATag
 func NewATag() *ATag {
 	return new(ATag)
 }
+
+// SetHref set ATag.Href
 func (tag *ATag) SetHref(href string) *ATag {
 	tag.Href = href
 	return tag
 }
+
+// SetContent set ATag.Content
 func (tag *ATag) SetContent(content string) *ATag {
 	tag.Content = content
 	return tag
 }
 
+// AtTag At标签
 type AtTag struct {
-	UserId   string
-	AtAll    bool
+	// UserId open_id
+	UserId string
+	// AtAll 是否at全部，与UserId互斥
+	AtAll bool
+	// Username 	用户姓名
 	Username string
 }
 
@@ -200,30 +253,44 @@ func (tag *AtTag) ToMessageMap() map[string]interface{} {
 	}
 	return tagMap
 }
+
+// NewAtTag create AtTag
 func NewAtTag() *AtTag {
 	return new(AtTag)
 }
+
+// SetUserId set AtTag.UserId
 func (tag *AtTag) SetUserId(userId string) *AtTag {
 	tag.UserId = userId
 	return tag
 }
+
+// SetUserName set AtTag.Username
 func (tag *AtTag) SetUserName(username string) *AtTag {
 	tag.Username = username
 	return tag
 }
+
+// SetAtAll set AtTag.AtAll
 func (tag *AtTag) SetAtAll(atAll bool) *AtTag {
 	tag.AtAll = atAll
 	return tag
 }
+
+// IsAtAll set AtTag.AtAll is true
 func (tag *AtTag) IsAtAll() *AtTag {
 	tag.AtAll = true
 	return tag
 }
 
+// ImgTag img标签
 type ImgTag struct {
+	// ImageKey 图片的唯一标识
 	ImageKey string
-	Height   int
-	Width    int
+	// Height 图片的高
+	Height int
+	// Width 图片的宽
+	Width int
 }
 
 func (tag *ImgTag) getTag() string {
@@ -242,39 +309,51 @@ func (tag *ImgTag) ToMessageMap() map[string]interface{} {
 	return tagMap
 }
 
+// NewImgTag create ImgTag
 func NewImgTag() *ImgTag {
 	return new(ImgTag)
 }
+
+// SetImageKey set ImgTag.ImageKey
 func (tag *ImgTag) SetImageKey(imageKey string) *ImgTag {
 	tag.ImageKey = imageKey
 	return tag
 }
 
+// SetHeight set ImgTag.Height
 func (tag *ImgTag) SetHeight(height int) *ImgTag {
 	tag.Height = height
 	return tag
 }
+
+// SetWidth set ImgTag.Width
 func (tag *ImgTag) SetWidth(width int) *ImgTag {
 	tag.Width = width
 	return tag
 }
 
+// PostTags 富文本标签
 type PostTags struct {
-	postTags []PostTag
+	// PostTags 富文本标签集
+	PostTags []PostTag
 }
 
+// NewPostTags create PostTags
 func NewPostTags() *PostTags {
 	tags := &PostTags{
-		postTags: []PostTag{},
+		PostTags: []PostTag{},
 	}
 	return tags
 }
 
+// AddTags add post tags
 func (tag *PostTags) AddTags(tags ...PostTag) *PostTags {
-	tag.postTags = append(tag.postTags, tags...)
+	tag.PostTags = append(tag.PostTags, tags...)
 	return tag
 }
+
+// AddTag add post tag
 func (tag *PostTags) AddTag(postTag PostTag) *PostTags {
-	tag.postTags = append(tag.postTags, postTag)
+	tag.PostTags = append(tag.PostTags, postTag)
 	return tag
 }
