@@ -1,5 +1,5 @@
 # feishu-robot
-[![Go Reference](https://pkg.go.dev/badge/github.com/hb0730/feishu-robot.svg)](https://pkg.go.dev/github.com/hb0730/feishu-robot) 飞书机器人
+[![Go Reference](https://pkg.go.dev/badge/github.com/group-robot/feishu-robot.svg)](https://pkg.go.dev/github.com/group-robot/feishu-robot) 飞书机器人
 
 # Example
 
