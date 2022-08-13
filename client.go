@@ -32,7 +32,7 @@ func (c *Client) SendMessage(message Message) (*Response, error) {
 	return c.SendMessageByUrl(c.Webhook, message)
 }
 func (c *Client) SendMessageStr(message string) (*Response, error) {
-	return c.send(c.Webhook, message)
+	return c.SendMessageStrByUrl(c.Webhook, message)
 }
 func (c *Client) SendMessageByUrl(url string, message Message) (*Response, error) {
 	if message == nil {
