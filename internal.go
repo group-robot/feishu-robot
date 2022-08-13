@@ -407,7 +407,9 @@ func (card *CardElement) ToMessage() map[string]interface{} {
 		fields = append(fields, field.ToMessage())
 	}
 	msg["tag"] = card.GetContentTag()
-	msg["text"] = card.Text.ToMessage()
+	if card.Text != nil {
+		msg["text"] = card.Text.ToMessage()
+	}
 	msg["fields"] = fields
 	if card.Extra != nil {
 		msg["extra"] = card.Extra.ToMessage()
@@ -682,11 +684,14 @@ func (image *CardImage) SetPreview(preview bool) *CardImage {
 	return image
 }
 
+func (image *CardImage) GetContentTag() string {
+	return "img"
+}
 func (image *CardImage) ToMessage() map[string]interface{} {
 	return map[string]interface{}{
-		"tag":     "img",
+		"tag":     image.GetContentTag(),
 		"img_key": image.ImageKey,
-		"alt":     image.Alt,
+		"alt":     image.Alt.ToMessage(),
 		"preview": image.Preview,
 	}
 }
@@ -729,13 +734,16 @@ func (action *CardAction) SetLayout(layout LayoutAction) *CardAction {
 	action.Layout = layout
 	return action
 }
+func (action *CardAction) GetContentTag() string {
+	return "action"
+}
 func (action *CardAction) ToMessage() map[string]interface{} {
 	msg := map[string]interface{}{}
 	var actions []map[string]interface{}
 	for _, a := range action.Actions {
 		actions = append(actions, a.ToMessage())
 	}
-	msg["tag"] = "action"
+	msg["tag"] = action.GetContentTag()
 	msg["actions"] = actions
 	msg["layout"] = action.Layout
 	return msg
@@ -1009,7 +1017,7 @@ type ButtonActionElement struct {
 	// ButtonType 配置按钮样式，默认为"default"
 	ButtonType ButtonType
 	// Value 点击后返回业务方,	仅支持key-value形式的json结构，且key为String类型。
-	Value string
+	Value map[string]string
 	// Confirm 	二次确认的弹框
 	Confirm *ConfirmElement
 }
@@ -1041,7 +1049,7 @@ func (button *ButtonActionElement) SetType(buttonType ButtonType) *ButtonActionE
 }
 
 // SetValue set ButtonActionElement.Value
-func (button *ButtonActionElement) SetValue(value string) *ButtonActionElement {
+func (button *ButtonActionElement) SetValue(value map[string]string) *ButtonActionElement {
 	button.Value = value
 	return button
 }
@@ -1063,7 +1071,9 @@ func (button *ButtonActionElement) ToMessage() map[string]interface{} {
 		msg["multi_url"] = button.MultiUrl.ToMessage()
 	}
 	msg["type"] = button.ButtonType
-	msg["value"] = button.Value
+	if len(button.Value) > 0 {
+		msg["value"] = button.Value
+	}
 	if button.Confirm != nil {
 		msg["confirm"] = button.Confirm.ToMessage()
 	}
