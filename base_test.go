@@ -134,9 +134,9 @@ func TestInteractiveMessage_ToMessageMap1(t *testing.T) {
 		NewCardHr(),
 		NewCardAction(
 			NewButtonActionElement(NewCardText(Text, "批准")).
-				SetType(PrimaryType).SetValue(map[string]string{"chosen": "approve"}),
+				SetType(PrimaryType).SetValue(map[string]interface{}{"chosen": "approve"}),
 			NewButtonActionElement(NewCardText(Text, "拒绝")).
-				SetType(PrimaryType).SetValue(map[string]string{"chosen": "decline"}),
+				SetType(PrimaryType).SetValue(map[string]interface{}{"chosen": "decline"}),
 		).SetLayout(
 			Bisected,
 		),
@@ -165,9 +165,9 @@ func TestInteractiveMessage_ToMessageMap2(t *testing.T) {
 		NewCardHr(),
 		NewCardAction(
 			NewButtonActionElement(NewCardText(Text, "😍 带我！带我！！")).
-				SetType(DefaultType).SetValue(map[string]string{"chosen": "option1"}),
+				SetType(DefaultType).SetValue(map[string]interface{}{"chosen": "option1"}),
 			NewButtonActionElement(NewCardText(Text, "🤐 告辞…")).
-				SetType(DefaultType).SetValue(map[string]string{"chosen": "option2"}),
+				SetType(DefaultType).SetValue(map[string]interface{}{"chosen": "option2"}),
 		),
 		NewCardNote(
 			NewCardText(Text, "创建者：王大明 🔐本投票为匿名投票"),

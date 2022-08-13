@@ -783,7 +783,7 @@ type DatePickerActionElement struct {
 	// Placeholder 占位符，无初始值时必填
 	Placeholder *CardText
 	// Value 用户选定后返回业务方的数据 JSON
-	Value string
+	Value map[string]interface{}
 	// Confirm 二次确认的弹框
 	Confirm *ConfirmElement
 }
@@ -818,7 +818,7 @@ func (datePicker *DatePickerActionElement) SetPlaceholder(placeholder *CardText)
 }
 
 // SetValue set DatePickerActionElement.Value
-func (datePicker *DatePickerActionElement) SetValue(value string) *DatePickerActionElement {
+func (datePicker *DatePickerActionElement) SetValue(value map[string]interface{}) *DatePickerActionElement {
 	datePicker.Value = value
 	return datePicker
 }
@@ -834,13 +834,21 @@ func (datePicker *DatePickerActionElement) GetActionTag() string {
 func (datePicker *DatePickerActionElement) ToMessage() map[string]interface{} {
 	msg := map[string]interface{}{}
 	msg["tag"] = datePicker.Tag
-	msg["initial_date"] = datePicker.InitialDate
-	msg["initial_time"] = datePicker.InitialTime
-	msg["initial_datetime"] = datePicker.InitialDatetime
+	if len(datePicker.InitialDate) > 0 {
+		msg["initial_date"] = datePicker.InitialDate
+	}
+	if len(datePicker.InitialTime) > 0 {
+		msg["initial_time"] = datePicker.InitialTime
+	}
+	if len(datePicker.InitialDatetime) > 0 {
+		msg["initial_datetime"] = datePicker.InitialDatetime
+	}
 	if datePicker.Placeholder != nil {
 		msg["placeholder"] = datePicker.Placeholder.ToMessage()
 	}
-	msg["value"] = datePicker.Value
+	if len(datePicker.Value) > 0 {
+		msg["value"] = datePicker.Value
+	}
 	if datePicker.Confirm != nil {
 		msg["confirm"] = datePicker.Confirm.ToMessage()
 	}
@@ -854,7 +862,7 @@ type OverflowActionElement struct {
 	// Options 待选选项
 	Options []*OptionElement
 	// Value 用户选定后返回业务方的数据
-	Value string
+	Value map[string]interface{}
 	// Confirm 二次确认的弹框
 	Confirm *ConfirmElement
 }
@@ -873,7 +881,7 @@ func (overflow *OverflowActionElement) AddOptions(options ...*OptionElement) *Ov
 }
 
 // SetValue set OverflowActionElement.Value
-func (overflow *OverflowActionElement) SetValue(value string) *OverflowActionElement {
+func (overflow *OverflowActionElement) SetValue(value map[string]interface{}) *OverflowActionElement {
 	overflow.Value = value
 	return overflow
 }
@@ -894,7 +902,10 @@ func (overflow *OverflowActionElement) ToMessage() map[string]interface{} {
 		options = append(options, option.ToMessage())
 	}
 	msg["options"] = options
-	msg["value"] = overflow.Value
+	if len(overflow.Value) > 0 {
+		msg["value"] = overflow.Value
+
+	}
 	if overflow.Confirm != nil {
 		msg["confirm"] = overflow.Confirm.ToMessage()
 	}
@@ -922,7 +933,7 @@ type SelectMenuActionElement struct {
 	// Options 	待选选项
 	Options []*OptionElement
 	// Value 用户选定后返回业务方的数据 	key-value形式的json结构，且key为String类型
-	Value string
+	Value map[string]interface{}
 	// Confirm 	二次确认的弹框
 	Confirm *ConfirmElement
 }
@@ -960,7 +971,7 @@ func (selectMenu *SelectMenuActionElement) AddOptions(options ...*OptionElement)
 }
 
 // SetValue set SelectMenuActionElement.Value
-func (selectMenu *SelectMenuActionElement) SetValue(value string) *SelectMenuActionElement {
+func (selectMenu *SelectMenuActionElement) SetValue(value map[string]interface{}) *SelectMenuActionElement {
 	selectMenu.Value = value
 	return selectMenu
 }
@@ -987,7 +998,10 @@ func (selectMenu *SelectMenuActionElement) ToMessage() map[string]interface{} {
 		}
 		msg["options"] = options
 	}
-	msg["value"] = selectMenu.Value
+	if len(selectMenu.Value) > 0 {
+		msg["value"] = selectMenu.Value
+
+	}
 	if selectMenu.Confirm != nil {
 		msg["confirm"] = selectMenu.Confirm.ToMessage()
 	}
@@ -1017,7 +1031,7 @@ type ButtonActionElement struct {
 	// ButtonType 配置按钮样式，默认为"default"
 	ButtonType ButtonType
 	// Value 点击后返回业务方,	仅支持key-value形式的json结构，且key为String类型。
-	Value map[string]string
+	Value map[string]interface{}
 	// Confirm 	二次确认的弹框
 	Confirm *ConfirmElement
 }
@@ -1049,7 +1063,7 @@ func (button *ButtonActionElement) SetType(buttonType ButtonType) *ButtonActionE
 }
 
 // SetValue set ButtonActionElement.Value
-func (button *ButtonActionElement) SetValue(value map[string]string) *ButtonActionElement {
+func (button *ButtonActionElement) SetValue(value map[string]interface{}) *ButtonActionElement {
 	button.Value = value
 	return button
 }
