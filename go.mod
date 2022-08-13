@@ -1,4 +1,4 @@
-module github.com/hb0730/feishu-robot
+module github.com/group-robot/feishu-robot/v2
 
 go 1.16
 

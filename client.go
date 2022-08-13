@@ -1,22 +1,97 @@
 package feishu
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/base64"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/go-resty/resty/v2"
-	"github.com/hb0730/feishu-robot/internal/security"
 	"strconv"
 	"time"
 )
 
 // Client feishu robot client
 type Client struct {
-	WebHok string
+	// Webhook robot webhook address
+	Webhook string
+	// Secret robot secret
 	Secret string
+	client *resty.Client
 }
 
-// NewClient new feishu robot client
-func NewClient(webhok, secret string) *Client {
-	return &Client{webhok, secret}
+// NewClient create Client
+func NewClient() *Client {
+	return &Client{
+		client: resty.New(),
+	}
+}
+
+func (c *Client) SendMessage(message Message) (*Response, error) {
+	return c.SendMessageByUrl(c.Webhook, message)
+}
+func (c *Client) SendMessageStr(message string) (*Response, error) {
+	return c.send(c.Webhook, message)
+}
+func (c *Client) SendMessageByUrl(url string, message Message) (*Response, error) {
+	if message == nil {
+		return nil, errors.New("message missing")
+	}
+	body := message.ToMessageMap()
+	if len(c.Secret) != 0 {
+		timestamp := time.Now().Unix()
+		sign, err := c.GenSign(c.Secret, timestamp)
+		if err != nil {
+			return nil, err
+		}
+		body["timestamp"] = strconv.FormatInt(timestamp, 10)
+		body["sign"] = sign
+	}
+	return c.send(url, body)
+}
+func (c *Client) SendMessageStrByUrl(url, message string) (*Response, error) {
+	var body map[string]interface{}
+	err := json.Unmarshal([]byte(message), &body)
+	if err != nil {
+		return nil, err
+	}
+	if len(c.Secret) != 0 {
+		timestamp := time.Now().Unix()
+		sign, err := c.GenSign(c.Secret, timestamp)
+		if err != nil {
+			return nil, err
+		}
+		body["timestamp"] = strconv.FormatInt(timestamp, 10)
+		body["sign"] = sign
+	}
+	return c.send(url, body)
+}
+func (c *Client) send(url string, body interface{}) (*Response, error) {
+	resp, err := c.client.R().
+		SetHeader("Accept", "application/json").
+		SetHeader("Content-Type", "application/json").
+		SetResult(&Response{}).
+		ForceContentType("application/json").
+		SetBody(body).
+		Post(url)
+	if err != nil {
+		return nil, err
+	}
+	result := resp.Result().(*Response)
+	return result, err
+}
+func (c *Client) GenSign(secret string, timestamp int64) (string, error) {
+	//timestamp + key 做sha256, 再进行base64 encode
+	stringToSign := fmt.Sprintf("%v", timestamp) + "\n" + secret
+	var data []byte
+	h := hmac.New(sha256.New, []byte(stringToSign))
+	_, err := h.Write(data)
+	if err != nil {
+		return "", err
+	}
+	signature := base64.StdEncoding.EncodeToString(h.Sum(nil))
+	return signature, nil
 }
 
 // Response response struct
@@ -25,36 +100,7 @@ type Response struct {
 	Msg  string `json:"msg"`
 }
 
-// Send send message
-func (c *Client) Send(message Message) (*Response, error) {
-	res := &Response{}
-	if len(c.WebHok) < 1 {
-		return res, fmt.Errorf("webhok is blank")
-	}
-	timestamp := time.Now().Unix()
-	sign, err := security.GenSign(c.Secret, timestamp)
-	if err != nil {
-		return res, err
-	}
-
-	body := message.ToMessageMap()
-	body["timestamp"] = strconv.FormatInt(timestamp, 10)
-	body["sign"] = sign
-	client := resty.New()
-	resp, err := client.SetRetryCount(3).R().
-		SetBody(body).
-		SetHeader("Accept", "application/json").
-		SetHeader("Content-Type", "application/json").
-		SetResult(&Response{}).
-		ForceContentType("application/json").
-		Post(c.WebHok)
-	if err != nil {
-		return nil, err
-	}
-	result := resp.Result().(*Response)
-	if result.Code != 0 {
-		return res, fmt.Errorf("send message to feishu error = %s", result.Msg)
-	}
-	return result, nil
-
+// IsSuccess is success
+func (r *Response) IsSuccess() bool {
+	return r.Code == 0
 }
